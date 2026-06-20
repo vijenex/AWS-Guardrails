@@ -1,0 +1,15 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Secrets (should never be here, but belt and suspenders)
+.env
+*.pem
+*.key
+credentials
