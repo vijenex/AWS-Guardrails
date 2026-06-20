@@ -1,6 +1,6 @@
 # Vijenex AWS Guardrails
 
-**Enterprise-grade AWS Organizations governance policies — production-tested, open-source, ready to deploy.**
+**Production-tested AWS Organizations governance policies covering SCPs, RCPs, backup enforcement, tag compliance, declarative policies, and AI opt-out controls. Copy what you need. Read the companion docs before applying to production.**
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Maintained by Vijenex™](https://img.shields.io/badge/Maintained_by-Vijenex™-green.svg)](https://vijenex.com)

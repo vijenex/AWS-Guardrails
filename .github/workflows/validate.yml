@@ -1,0 +1,106 @@
+name: Validate policies
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate JSON and structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate JSON syntax
+        run: |
+          echo "Checking JSON files..."
+          failed=0
+          for f in $(find . -name "*.json" \
+            -not -path "./.git/*"); do
+            if ! python3 -m json.tool \
+              "$f" > /dev/null 2>&1; then
+              echo "INVALID JSON: $f"
+              failed=1
+            else
+              echo "OK: $f"
+            fi
+          done
+          if [ $failed -eq 1 ]; then
+            echo "JSON validation failed."
+            exit 1
+          fi
+          echo "All JSON files are valid."
+
+      - name: Check _meta blocks present
+        run: |
+          echo "Checking _meta blocks..."
+          failed=0
+          for f in $(find . -name "*.json" \
+            -not -path "./.git/*"); do
+            if ! python3 -c "
+          import json, sys
+          data = json.load(open('$f'))
+          if '_meta' not in data:
+              print('MISSING _meta: $f')
+              sys.exit(1)
+            "; then
+              failed=1
+            fi
+          done
+          if [ $failed -eq 1 ]; then
+            echo "_meta check failed."
+            exit 1
+          fi
+          echo "All JSON files have _meta blocks."
+
+      - name: Check companion docs exist
+        run: |
+          echo "Checking companion .md files..."
+          failed=0
+          for f in $(find . -name "*.json" \
+            -not -path "./.git/*" \
+            -not -name "package*.json"); do
+            md="${f%.json}.md"
+            if [ ! -f "$md" ]; then
+              echo "MISSING companion doc: $md"
+              failed=1
+            fi
+          done
+          if [ $failed -eq 1 ]; then
+            echo "Missing companion docs."
+            exit 1
+          fi
+          echo "All JSON files have companion docs."
+
+      - name: Check Vijenex header present
+        run: |
+          echo "Checking _meta source attribution..."
+          failed=0
+          for f in $(find . -name "*.json" \
+            -not -path "./.git/*"); do
+            if ! python3 -c "
+          import json, sys
+          data = json.load(open('$f'))
+          meta = data.get('_meta', {})
+          src = meta.get('source', '')
+          if 'vijenex' not in src.lower():
+              print('MISSING vijenex in _meta.source: $f')
+              sys.exit(1)
+            "; then
+              failed=1
+            fi
+          done
+          if [ $failed -eq 1 ]; then
+            echo "Attribution check failed."
+            exit 1
+          fi
+          echo "All files have correct attribution."
