@@ -1,0 +1,27 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Declarative Policy: Enforce IMDSv2 (token-based) and set hop limit to 1 on all EC2 instances account-wide",
+    "protects_against": "SSRF attacks abusing IMDSv1 to steal credentials, lateral movement via metadata service",
+    "last_validated": "2026-06"
+  },
+  "ec2ManagedInstanceMetadataServiceConfiguration": {
+    "httpTokensState": {
+      "default": "required",
+      "allowedValues": ["required"]
+    },
+    "httpPutResponseHopLimit": {
+      "default": 1,
+      "allowedRange": {
+        "min": 1,
+        "max": 1
+      }
+    },
+    "instanceMetadataTags": {
+      "default": "disabled",
+      "allowedValues": ["disabled", "enabled"]
+    }
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Block deletion of critical infrastructure resources (ECS, RDS, EKS, ElastiCache, ElasticSearch/OpenSearch, Redshift, S3, DynamoDB, Route53, ELB, IAM, EC2) — requires elevated access to delete production resources",
+    "protects_against": "Accidental or malicious deletion of production infrastructure, ransomware-style destruction attacks on cloud resources",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyECSClusterDeletion",
+      "Effect": "Deny",
+      "Action": [
+        "ecs:DeleteCluster",
+        "ecs:DeleteService"
+      ],
+      "Resource": "arn:aws:ecs:*:*:*"
+    },
+    {
+      "Sid": "DenyOpenSearchDeletion",
+      "Effect": "Deny",
+      "Action": [
+        "es:DeleteDomain",
+        "es:DeleteElasticsearchDomain"
+      ],
+      "Resource": "arn:aws:es:*:*:*"
+    },
+    {
+      "Sid": "DenyRedshiftDeletion",
+      "Effect": "Deny",
+      "Action": "redshift:DeleteCluster",
+      "Resource": "arn:aws:redshift:*:*:*"
+    },
+    {
+      "Sid": "DenyELBDeletion",
+      "Effect": "Deny",
+      "Action": "elasticloadbalancing:DeleteLoadBalancer",
+      "Resource": "arn:aws:elasticloadbalancing:*:*:*"
+    },
+    {
+      "Sid": "DenyRoute53HostedZoneDeletion",
+      "Effect": "Deny",
+      "Action": "route53:DeleteHostedZone",
+      "Resource": "arn:aws:route53:::hostedzone/*"
+    },
+    {
+      "Sid": "DenyDynamoDBTableDeletion",
+      "Effect": "Deny",
+      "Action": "dynamodb:DeleteTable",
+      "Resource": "arn:aws:dynamodb:*:*:table/*"
+    },
+    {
+      "Sid": "DenyRDSDeletion",
+      "Effect": "Deny",
+      "Action": [
+        "rds:DeleteDBSnapshot",
+        "rds:DeleteDBInstance",
+        "rds:DeleteDBCluster",
+        "rds:DeleteDBClusterSnapshot",
+        "rds:DeleteGlobalCluster"
+      ],
+      "Resource": "arn:aws:rds:*:*:*"
+    },
+    {
+      "Sid": "DenyElastiCacheDeletion",
+      "Effect": "Deny",
+      "Action": [
+        "elasticache:DeleteCacheCluster",
+        "elasticache:DeleteSnapshot"
+      ],
+      "Resource": "arn:aws:elasticache:*:*:*"
+    },
+    {
+      "Sid": "DenyS3BucketDeletion",
+      "Effect": "Deny",
+      "Action": "s3:DeleteBucket",
+      "Resource": "arn:aws:s3:::*"
+    },
+    {
+      "Sid": "DenyEKSClusterDeletion",
+      "Effect": "Deny",
+      "Action": "eks:DeleteCluster",
+      "Resource": "arn:aws:eks:*:*:cluster/*"
+    },
+    {
+      "Sid": "DenyEC2CriticalDeletion",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:TerminateInstances",
+        "ec2:DeleteVolume",
+        "ec2:DeleteSnapshot",
+        "ec2:DeleteKeyPair",
+        "ec2:DeleteVpc",
+        "ec2:DeleteSubnet"
+      ],
+      "Resource": "arn:aws:ec2:*:*:*"
+    },
+    {
+      "Sid": "DenyIAMDeletion",
+      "Effect": "Deny",
+      "Action": [
+        "iam:DeleteUser",
+        "iam:DeleteRole",
+        "iam:DeletePolicy",
+        "iam:DeleteGroup"
+      ],
+      "Resource": [
+        "arn:aws:iam::*:user/*",
+        "arn:aws:iam::*:role/*",
+        "arn:aws:iam::*:policy/*",
+        "arn:aws:iam::*:group/*"
+      ]
+    }
+  ]
+}

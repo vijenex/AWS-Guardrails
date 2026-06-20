@@ -1,0 +1,62 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Tag Policy: Enforce consistent capitalisation and allowed values for Environment, Owner, and CostCenter tags across key AWS resource types",
+    "protects_against": "Cost attribution gaps, unowned resources, untracked spend by team or environment",
+    "last_validated": "2026-06"
+  },
+  "tags": {
+    "Environment": {
+      "tag_key": {
+        "@@assign": "Environment"
+      },
+      "tag_value": {
+        "@@assign": ["production", "staging", "development", "sandbox", "shared"]
+      },
+      "enforced_for": {
+        "@@assign": [
+          "ec2:instance",
+          "ec2:volume",
+          "rds:db",
+          "rds:cluster",
+          "s3:bucket",
+          "lambda:function",
+          "ecs:cluster",
+          "eks:cluster",
+          "elasticloadbalancing:loadbalancer"
+        ]
+      }
+    },
+    "Owner": {
+      "tag_key": {
+        "@@assign": "Owner"
+      },
+      "enforced_for": {
+        "@@assign": [
+          "ec2:instance",
+          "rds:db",
+          "rds:cluster",
+          "s3:bucket",
+          "lambda:function"
+        ]
+      }
+    },
+    "CostCenter": {
+      "tag_key": {
+        "@@assign": "CostCenter"
+      },
+      "enforced_for": {
+        "@@assign": [
+          "ec2:instance",
+          "rds:db",
+          "rds:cluster",
+          "s3:bucket",
+          "lambda:function",
+          "elasticloadbalancing:loadbalancer"
+        ]
+      }
+    }
+  }
+}

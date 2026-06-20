@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Prevent disabling the EBS default encryption setting at the region level",
+    "protects_against": "Accidental or malicious disabling of EBS encryption, creating unencrypted volumes",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyDisablingDefaultEBSEncryption",
+      "Effect": "Deny",
+      "Action": "ec2:DisableEbsEncryptionByDefault",
+      "Resource": "*"
+    }
+  ]
+}

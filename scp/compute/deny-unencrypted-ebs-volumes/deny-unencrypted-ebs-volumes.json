@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Block attaching or snapshotting unencrypted EBS volumes — all volumes must be encrypted at rest",
+    "protects_against": "Data at rest exposure if physical or virtual disk is accessed outside EC2, snapshot exfiltration of unencrypted data",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyAttachUnencryptedVolume",
+      "Effect": "Deny",
+      "Action": "ec2:AttachVolume",
+      "Resource": "arn:aws:ec2:*:*:volume/*",
+      "Condition": {
+        "Bool": {
+          "ec2:Encrypted": "false"
+        }
+      }
+    },
+    {
+      "Sid": "DenySnapshotUnencryptedVolume",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:CreateSnapshot",
+        "ec2:CreateSnapshots"
+      ],
+      "Resource": "arn:aws:ec2:*:*:volume/*",
+      "Condition": {
+        "Bool": {
+          "ec2:Encrypted": "false"
+        }
+      }
+    }
+  ]
+}

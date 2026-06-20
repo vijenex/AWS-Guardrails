@@ -1,0 +1,34 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Block attaching AdministratorAccess, FullAccess, and PowerUserAccess managed policies to any IAM principal",
+    "protects_against": "Privilege escalation via overly permissive AWS managed policies, accidental AdministratorAccess attachment",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyAdminAndFullAccessPolicies",
+      "Effect": "Deny",
+      "Action": [
+        "iam:AttachUserPolicy",
+        "iam:AttachRolePolicy",
+        "iam:AttachGroupPolicy"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "iam:PolicyARN": [
+            "arn:aws:iam::aws:policy/AdministratorAccess",
+            "arn:aws:iam::aws:policy/*FullAccess",
+            "arn:aws:iam::aws:policy/*FullAccess*",
+            "arn:aws:iam::aws:policy/*Administrator*",
+            "arn:aws:iam::aws:policy/PowerUserAccess"
+          ]
+        }
+      }
+    }
+  ]
+}

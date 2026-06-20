@@ -1,0 +1,27 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Resource Control Policy: Block any IAM principal from making S3 buckets or objects publicly accessible via bucket policy",
+    "protects_against": "Data exposure via S3 public access — enforces at the resource level regardless of which account makes the request",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyS3PublicBucketPolicy",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": [
+        "s3:PutBucketPublicAccessBlock"
+      ],
+      "Resource": "arn:aws:s3:::*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:PrincipalOrgID": "REPLACE_WITH_YOUR_ORG_ID"
+        }
+      }
+    }
+  ]
+}

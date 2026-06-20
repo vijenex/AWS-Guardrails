@@ -1,0 +1,24 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Block launching EC2 instances from public community AMIs — only approved/private AMIs are allowed",
+    "protects_against": "Supply chain compromise via malicious public AMIs containing backdoors, cryptominers, or malware",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyCommunityAMIs",
+      "Effect": "Deny",
+      "Action": "ec2:RunInstances",
+      "Resource": "arn:aws:ec2:*:*:image/ami-*",
+      "Condition": {
+        "StringEquals": {
+          "ec2:ImageType": "community"
+        }
+      }
+    }
+  ]
+}

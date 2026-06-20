@@ -1,0 +1,47 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "S3 security baseline: block static website hosting, enforce bucket owner enforcement, block public access configuration changes, and block S3 PutObject from Chatbot",
+    "protects_against": "Accidental S3 data exposure via website hosting, public ACLs, and bucket misconfiguration",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyS3StaticWebsiteHosting",
+      "Effect": "Deny",
+      "Action": "s3:PutBucketWebsite",
+      "Resource": "arn:aws:s3:::*"
+    },
+    {
+      "Sid": "DenyS3BucketWithoutOwnerEnforcement",
+      "Effect": "Deny",
+      "Action": "s3:CreateBucket",
+      "Resource": "arn:aws:s3:::*",
+      "Condition": {
+        "StringNotEqualsIfExists": {
+          "s3:x-amz-object-ownership": "BucketOwnerEnforced"
+        }
+      }
+    },
+    {
+      "Sid": "DenyS3PublicAccessBlockModification",
+      "Effect": "Deny",
+      "Action": "s3:PutBucketPublicAccessBlock",
+      "Resource": "arn:aws:s3:::*"
+    },
+    {
+      "Sid": "DenyS3PutObjectFromChatbot",
+      "Effect": "Deny",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::*/*",
+      "Condition": {
+        "StringLike": {
+          "aws:ChatbotSourceArn": "arn:aws:chatbot::*:chat-configuration/slack-channel/*"
+        }
+      }
+    }
+  ]
+}

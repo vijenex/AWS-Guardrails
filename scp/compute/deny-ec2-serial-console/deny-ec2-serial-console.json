@@ -1,0 +1,19 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Disable EC2 serial console access across the account — prevents out-of-band shell access to instances",
+    "protects_against": "Unauthorized out-of-band OS-level access to EC2 instances, lateral movement via serial console",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyEC2SerialConsoleAccess",
+      "Effect": "Deny",
+      "Action": "ec2:EnableSerialConsoleAccess",
+      "Resource": "*"
+    }
+  ]
+}

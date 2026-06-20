@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Allow only designated remediation roles to modify S3 bucket public access block settings — block all other principals from changing them",
+    "protects_against": "Unauthorized disabling of S3 public access blocks, accidental or malicious bucket exposure",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyS3PublicAccessBlockChangeExceptRemediationRole",
+      "Effect": "Deny",
+      "Action": "s3:PutBucketPublicAccessBlock",
+      "Resource": "arn:aws:s3:::*",
+      "Condition": {
+        "ArnNotLike": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:role/S3PublicAccessRemediationRole",
+            "arn:aws:iam::*:role/service-role/S3PublicAccessRemediationRole",
+            "arn:aws:sts::*:assumed-role/S3PublicAccessRemediationRole/*"
+          ]
+        }
+      }
+    }
+  ]
+}

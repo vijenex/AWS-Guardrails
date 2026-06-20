@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Block invocation of specific high-cost or unapproved Bedrock foundation models by model ARN",
+    "protects_against": "Unauthorized use of expensive or unapproved AI models, runaway AI spend, model governance violations",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyUnauthorizedBedrockModels",
+      "Effect": "Deny",
+      "Action": [
+        "bedrock:InvokeModel",
+        "bedrock:InvokeModelWithResponseStream",
+        "bedrock:CreateModelInvocationJob"
+      ],
+      "Resource": [
+        "arn:aws:bedrock:*::foundation-model/anthropic.claude-fable-5",
+        "arn:aws:bedrock:*:*:inference-profile/global.anthropic.claude-fable-5",
+        "arn:aws:bedrock:*::foundation-model/anthropic.claude-opus-4-8-v1",
+        "arn:aws:bedrock:*:*:inference-profile/global.anthropic.claude-opus-4-8-v1"
+      ]
+    }
+  ]
+}

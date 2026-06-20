@@ -1,0 +1,142 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Block creating key EC2 resources (instances, volumes, VPCs, subnets, etc.) without mandatory tags — enforces tagging governance at the API layer",
+    "protects_against": "Untagged resource sprawl, inability to attribute costs and ownership, compliance gaps from unidentified resources",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyEC2InstanceWithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": "ec2:RunInstances",
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/Owner": "true",
+          "aws:RequestTag/Env": "true",
+          "aws:RequestTag/Subcomponent": "true",
+          "aws:RequestTag/Created_By": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyEC2VolumeWithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": "ec2:CreateVolume",
+      "Resource": "arn:aws:ec2:*:*:volume/*",
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/Owner": "true",
+          "aws:RequestTag/Env": "true",
+          "aws:RequestTag/Subcomponent": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyVPCWithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": "ec2:CreateVpc",
+      "Resource": "arn:aws:ec2:*:*:vpc/*",
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/Subcomponent": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenySubnetWithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": "ec2:CreateSubnet",
+      "Resource": "arn:aws:ec2:*:*:subnet/*",
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/Subcomponent": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyNatGatewayWithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": "ec2:CreateNatGateway",
+      "Resource": "arn:aws:ec2:*:*:natgateway/*",
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/Subcomponent": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenySecurityGroupWithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": "ec2:CreateSecurityGroup",
+      "Resource": "arn:aws:ec2:*:*:security-group/*",
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/Subcomponent": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyECSClusterWithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": "ecs:CreateCluster",
+      "Resource": "arn:aws:ecs:*:*:cluster/*",
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/Subcomponent": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyElastiCacheWithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": "elasticache:CreateCacheCluster",
+      "Resource": "arn:aws:elasticache:*:*:cluster/*",
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/Subcomponent": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyOpenSearchWithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": [
+        "es:CreateDomain",
+        "es:CreateElasticsearchDomain"
+      ],
+      "Resource": "arn:aws:es:*:*:domain/*",
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/Subcomponent": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyLambdaWithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": "lambda:CreateFunction",
+      "Resource": "arn:aws:lambda:*:*:function/*",
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/Subcomponent": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyELBWithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": "elasticloadbalancing:CreateLoadBalancer",
+      "Resource": "arn:aws:elasticloadbalancing:*:*:loadbalancer/*",
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/Subcomponent": "true"
+        }
+      }
+    }
+  ]
+}

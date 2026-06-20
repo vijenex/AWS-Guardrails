@@ -1,0 +1,21 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Block all AWS Marketplace actions — prevent unauthorized software purchases and subscriptions",
+    "protects_against": "Unauthorized software purchases via AWS Marketplace, shadow IT procurement, unexpected billing from marketplace subscriptions",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyAWSMarketplaceAccess",
+      "Effect": "Deny",
+      "Action": [
+        "aws-marketplace:*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

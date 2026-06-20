@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Prevent deleting or removing OUs, member accounts, and Directory Service directories — protect the organization structural integrity",
+    "protects_against": "Accidental or malicious destruction of AWS Organizations structure, orphaned accounts, loss of governance inheritance",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyOrgStructureDeletion",
+      "Effect": "Deny",
+      "Action": [
+        "organizations:DeleteOrganization",
+        "organizations:DeleteOrganizationalUnit",
+        "organizations:RemoveAccountFromOrganization"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyDirectoryDeletion",
+      "Effect": "Deny",
+      "Action": "ds:DeleteDirectory",
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyIdentityStoreDeletes",
+      "Effect": "Deny",
+      "Action": "identitystore:Delete*",
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyVPCNetworkDeletion",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:DeleteVpc",
+        "ec2:DeleteSubnet",
+        "ec2:DeleteInternetGateway",
+        "ec2:DetachInternetGateway"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

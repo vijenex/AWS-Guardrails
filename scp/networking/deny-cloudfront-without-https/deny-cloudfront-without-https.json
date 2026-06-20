@@ -1,0 +1,27 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Block creating or updating CloudFront distributions that allow HTTP-only viewer connections — enforce HTTPS-only",
+    "protects_against": "Man-in-the-middle attacks on HTTP CloudFront distributions, session hijacking via unencrypted cookies",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyCloudFrontHTTPAllowed",
+      "Effect": "Deny",
+      "Action": [
+        "cloudfront:CreateDistribution",
+        "cloudfront:UpdateDistribution"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "cloudfront:ViewerProtocolPolicy": "allow-all"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Backup Policy: Enforce daily backups with 35-day retention across EC2, RDS, EFS, DynamoDB, and EBS for all tagged production resources",
+    "protects_against": "Data loss, ransomware, accidental deletion without recovery path",
+    "last_validated": "2026-06"
+  },
+  "plans": {
+    "VijenexDailyBackupPlan": {
+      "regions": {
+        "@@assign": ["REPLACE_WITH_YOUR_PRIMARY_REGION"]
+      },
+      "rules": {
+        "DailyBackupRule": {
+          "schedule_expression": {
+            "@@assign": "cron(0 5 ? * * *)"
+          },
+          "start_backup_window_minutes": {
+            "@@assign": "60"
+          },
+          "complete_backup_window_minutes": {
+            "@@assign": "180"
+          },
+          "lifecycle": {
+            "delete_after_days": {
+              "@@assign": "35"
+            }
+          },
+          "target_backup_vault_name": {
+            "@@assign": "Default"
+          },
+          "copy_actions": {}
+        },
+        "WeeklyBackupRule": {
+          "schedule_expression": {
+            "@@assign": "cron(0 5 ? * SUN *)"
+          },
+          "start_backup_window_minutes": {
+            "@@assign": "60"
+          },
+          "complete_backup_window_minutes": {
+            "@@assign": "360"
+          },
+          "lifecycle": {
+            "delete_after_days": {
+              "@@assign": "90"
+            }
+          },
+          "target_backup_vault_name": {
+            "@@assign": "Default"
+          },
+          "copy_actions": {}
+        }
+      },
+      "selections": {
+        "tags": {
+          "ProductionResourceSelection": {
+            "iam_role_arn": {
+              "@@assign": "arn:aws:iam::$account:role/service-role/AWSBackupDefaultServiceRole"
+            },
+            "tag_key": {
+              "@@assign": "Environment"
+            },
+            "tag_value": {
+              "@@assign": ["production", "prod"]
+            }
+          }
+        }
+      },
+      "backup_plan_tags": {
+        "ManagedBy": {
+          "@@assign": "Vijenex-AWS-Guardrails"
+        }
+      }
+    }
+  }
+}

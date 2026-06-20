@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Require IMDSv2 (token-based) on all EC2 instances and cap hop limit to prevent SSRF-based metadata credential theft",
+    "protects_against": "SSRF attacks exploiting EC2 instance metadata service to steal IAM credentials (IMDS v1 attacks)",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyIMDSv1Instances",
+      "Effect": "Deny",
+      "Action": "ec2:RunInstances",
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Condition": {
+        "StringNotEquals": {
+          "ec2:MetadataHttpTokens": "required"
+        }
+      }
+    },
+    {
+      "Sid": "DenyHighHopLimit",
+      "Effect": "Deny",
+      "Action": "ec2:RunInstances",
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Condition": {
+        "NumericGreaterThan": {
+          "ec2:MetadataHttpPutResponseHopLimit": 2
+        }
+      }
+    },
+    {
+      "Sid": "DenyModifyingMetadataOptions",
+      "Effect": "Deny",
+      "Action": "ec2:ModifyInstanceMetadataOptions",
+      "Resource": "*"
+    }
+  ]
+}

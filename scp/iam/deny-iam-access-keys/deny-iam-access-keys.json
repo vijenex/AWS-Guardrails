@@ -1,0 +1,22 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Block creation and update of IAM user access keys — enforce use of IAM roles and temporary credentials only",
+    "protects_against": "Long-lived static credential exposure, secret sprawl, credential stuffing from leaked access keys",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyIAMAccessKeyCreation",
+      "Effect": "Deny",
+      "Action": [
+        "iam:CreateAccessKey",
+        "iam:UpdateAccessKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

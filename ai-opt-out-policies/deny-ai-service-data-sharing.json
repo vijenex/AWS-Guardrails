@@ -1,0 +1,79 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "AI Opt-Out Policy: Opt all accounts out of AWS AI service data sharing — prevents AWS from using your data to improve AI/ML models",
+    "protects_against": "Sensitive data leakage to AWS model training pipelines, compliance violations for regulated industries",
+    "last_validated": "2026-06"
+  },
+  "services": {
+    "@@operators_allowed_for_child_policies": ["@@none"],
+    "rekognition": {
+      "opt_out_policy": {
+        "@@operators_allowed_for_child_policies": ["@@none"],
+        "@@assign": "optOut"
+      }
+    },
+    "textract": {
+      "opt_out_policy": {
+        "@@operators_allowed_for_child_policies": ["@@none"],
+        "@@assign": "optOut"
+      }
+    },
+    "comprehend": {
+      "opt_out_policy": {
+        "@@operators_allowed_for_child_policies": ["@@none"],
+        "@@assign": "optOut"
+      }
+    },
+    "translate": {
+      "opt_out_policy": {
+        "@@operators_allowed_for_child_policies": ["@@none"],
+        "@@assign": "optOut"
+      }
+    },
+    "polly": {
+      "opt_out_policy": {
+        "@@operators_allowed_for_child_policies": ["@@none"],
+        "@@assign": "optOut"
+      }
+    },
+    "transcribe": {
+      "opt_out_policy": {
+        "@@operators_allowed_for_child_policies": ["@@none"],
+        "@@assign": "optOut"
+      }
+    },
+    "lex": {
+      "opt_out_policy": {
+        "@@operators_allowed_for_child_policies": ["@@none"],
+        "@@assign": "optOut"
+      }
+    },
+    "personalize": {
+      "opt_out_policy": {
+        "@@operators_allowed_for_child_policies": ["@@none"],
+        "@@assign": "optOut"
+      }
+    },
+    "forecast": {
+      "opt_out_policy": {
+        "@@operators_allowed_for_child_policies": ["@@none"],
+        "@@assign": "optOut"
+      }
+    },
+    "codeguruprofiler": {
+      "opt_out_policy": {
+        "@@operators_allowed_for_child_policies": ["@@none"],
+        "@@assign": "optOut"
+      }
+    },
+    "codewhisperer": {
+      "opt_out_policy": {
+        "@@operators_allowed_for_child_policies": ["@@none"],
+        "@@assign": "optOut"
+      }
+    }
+  }
+}

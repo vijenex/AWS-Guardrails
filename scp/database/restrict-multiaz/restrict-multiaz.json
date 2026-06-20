@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Block Multi-AZ deployments for ElastiCache and RDS in cost-sensitive environments like sandbox or development OUs",
+    "protects_against": "Excessive cloud spend from Multi-AZ deployments in non-production environments where HA is not required",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyMultiAZElastiCache",
+      "Effect": "Deny",
+      "Action": "elasticache:CreateCacheCluster",
+      "Resource": "*",
+      "Condition": {
+        "Bool": {
+          "elasticache:MultiAZEnabled": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyMultiAZRDS",
+      "Effect": "Deny",
+      "Action": "rds:CreateDBInstance",
+      "Resource": "*",
+      "Condition": {
+        "Bool": {
+          "rds:MultiAz": "true"
+        }
+      }
+    }
+  ]
+}

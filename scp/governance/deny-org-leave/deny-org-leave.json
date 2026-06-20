@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Prevent member accounts from leaving the AWS Organization, closing their account, and block external RAM resource sharing",
+    "protects_against": "Account exfiltration from the organization, orphaned accounts escaping governance controls, unauthorized cross-account resource sharing",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyLeavingOrganization",
+      "Effect": "Deny",
+      "Action": "organizations:LeaveOrganization",
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyAccountClosure",
+      "Effect": "Deny",
+      "Action": "account:CloseAccount",
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyExternalRAMShares",
+      "Effect": "Deny",
+      "Action": [
+        "ram:CreateResourceShare",
+        "ram:UpdateResourceShare"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "Bool": {
+          "ram:RequestedAllowsExternalPrincipals": "true"
+        }
+      }
+    }
+  ]
+}

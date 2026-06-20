@@ -1,0 +1,24 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Block all IAM actions triggered via AWS Chatbot (Slack/Teams integration) to prevent chat-based privilege escalation",
+    "protects_against": "Chat-based IAM privilege escalation via AWS Chatbot Slack/Teams integrations",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyIAMActionsViaChatbot",
+      "Effect": "Deny",
+      "Action": "iam:*",
+      "Resource": "*",
+      "Condition": {
+        "ArnLike": {
+          "aws:ChatbotSourceArn": "arn:aws:chatbot::*:*"
+        }
+      }
+    }
+  ]
+}

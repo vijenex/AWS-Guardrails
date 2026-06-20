@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Restrict EC2 instance launches to an approved list of golden AMI IDs — all other AMIs are blocked",
+    "protects_against": "Supply chain compromise via unapproved AMIs, configuration drift from unmanaged base images",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyNonApprovedAMIs",
+      "Effect": "Deny",
+      "Action": "ec2:RunInstances",
+      "Resource": "arn:aws:ec2:*:*:image/ami-*",
+      "Condition": {
+        "StringNotEquals": {
+          "ec2:ImageId": [
+            "REPLACE_WITH_APPROVED_AMI_ID_1",
+            "REPLACE_WITH_APPROVED_AMI_ID_2",
+            "REPLACE_WITH_APPROVED_AMI_ID_3"
+          ]
+        }
+      }
+    }
+  ]
+}

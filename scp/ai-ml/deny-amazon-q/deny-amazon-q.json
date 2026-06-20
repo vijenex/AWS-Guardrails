@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Block Amazon Q, Amazon Q Developer, and CodeWhisperer across the OU — optionally allow specific SSO roles",
+    "protects_against": "Unapproved AI coding assistants accessing source code and AWS environment context, data exfiltration via AI tools",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyAmazonQServices",
+      "Effect": "Deny",
+      "Action": [
+        "q:*",
+        "qdeveloper:*",
+        "codewhisperer:*"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "ArnNotLike": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*/AWSReservedSSO_AmazonQ-Approved-Access_*"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyAmazonQIDEPlugin",
+      "Effect": "Deny",
+      "Action": "*",
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "aws:UserAgent": "*AmazonQ-For-IDE*"
+        }
+      }
+    }
+  ]
+}

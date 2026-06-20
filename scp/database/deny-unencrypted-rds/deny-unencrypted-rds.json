@@ -1,0 +1,61 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Block creating unencrypted RDS DB instances, Aurora clusters, and EFS file systems",
+    "protects_against": "Plaintext database storage at rest, snapshot exfiltration of unencrypted DB data",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyUnencryptedRDSInstance",
+      "Effect": "Deny",
+      "Action": "rds:CreateDBInstance",
+      "Resource": "*",
+      "Condition": {
+        "Bool": {
+          "rds:StorageEncrypted": "false"
+        },
+        "ForAnyValue:StringEquals": {
+          "rds:DatabaseEngine": [
+            "mariadb",
+            "mysql",
+            "oracle-ee",
+            "oracle-se2",
+            "oracle-se1",
+            "oracle-se",
+            "postgres",
+            "sqlserver-ee",
+            "sqlserver-se",
+            "sqlserver-ex",
+            "sqlserver-web"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyUnencryptedAuroraCluster",
+      "Effect": "Deny",
+      "Action": "rds:CreateDBCluster",
+      "Resource": "*",
+      "Condition": {
+        "Bool": {
+          "rds:StorageEncrypted": "false"
+        }
+      }
+    },
+    {
+      "Sid": "DenyUnencryptedEFS",
+      "Effect": "Deny",
+      "Action": "elasticfilesystem:CreateFileSystem",
+      "Resource": "*",
+      "Condition": {
+        "Bool": {
+          "elasticfilesystem:Encrypted": "false"
+        }
+      }
+    }
+  ]
+}

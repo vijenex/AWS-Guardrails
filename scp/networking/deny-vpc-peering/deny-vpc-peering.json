@@ -1,0 +1,26 @@
+{
+  "_meta": {
+    "source": "https://github.com/vijenex/AWS-Guardrails",
+    "author": "Vijenex™ — https://vijenex.com",
+    "license": "Apache-2.0",
+    "description": "Block all VPC peering operations including creation, acceptance, and modification — enforce hub-and-spoke via Transit Gateway instead",
+    "protects_against": "Unauthorized cross-account/cross-VPC network access, lateral movement via VPC peering from compromised accounts",
+    "last_validated": "2026-06"
+  },
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyVPCPeeringCreation",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:CreateVpcPeeringConnection",
+        "ec2:AcceptVpcPeeringConnection",
+        "ec2:DeleteVpcPeeringConnection",
+        "ec2:ModifyVpcPeeringConnectionOptions",
+        "ec2:AcceptTransitGatewayPeeringAttachment",
+        "ec2:CreateTransitGatewayPeeringAttachment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
